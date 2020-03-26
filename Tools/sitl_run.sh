@@ -121,6 +121,18 @@ elif [ "$program" == "gazebo" ] && [ ! -n "$no_sim" ]; then
 		echo "You need to have gazebo simulator installed!"
 		exit 1
 	fi
+elif [ "$program" == "airsim" ] && [ ! -n "$no_sim" ]; then
+	if [ "$model" == "iris" ]; then
+		if [ -f ${AIRSIM_APPLICATION_PATH} ]  && [ ! -z ${AIRSIM_APPLICATION_PATH} ]; then
+			${AIRSIM_APPLICATION_PATH}
+		else
+			echo "Could not find Airsim at AIRSIM_APPLICATION_PATH=${AIRSIM_APPLICATION_PATH}"
+			exit 1
+		fi
+	else
+		echo "Airsim is only supported for [iris] model"
+		exit 1
+	fi
 fi
 
 pushd "$rootfs" >/dev/null
