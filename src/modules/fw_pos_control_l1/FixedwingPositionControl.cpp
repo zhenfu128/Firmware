@@ -676,7 +676,8 @@ FixedwingPositionControl::control_position(const Vector2f &curr_pos, const Vecto
 						   false,
 						   radians(_param_fw_p_lim_min.get()));
 
-		} else if (pos_sp_curr.type == position_setpoint_s::SETPOINT_TYPE_LOITER) {
+		} else if (pos_sp_curr.type == position_setpoint_s::SETPOINT_TYPE_LOITER
+			   || pos_sp_curr.type == position_setpoint_s::SETPOINT_TYPE_SOARING) {
 
 			/* waypoint is a loiter waypoint */
 			float loiter_radius = pos_sp_curr.loiter_radius;
@@ -949,6 +950,10 @@ FixedwingPositionControl::control_position(const Vector2f &curr_pos, const Vecto
 
 	} else if (_control_mode_current == FW_POSCTRL_MODE_OTHER) {
 		_att_sp.thrust_body[0] = min(_att_sp.thrust_body[0], _param_fw_thr_max.get());
+
+	} else if (_control_mode_current == FW_POSCTRL_MODE_AUTO &&
+		   pos_sp_curr.type == position_setpoint_s::SETPOINT_TYPE_SOARING) {
+		_att_sp.thrust_body[0] = 0.0f;
 
 	} else {
 		/* Copy thrust and pitch values from tecs */
