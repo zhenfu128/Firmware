@@ -295,6 +295,11 @@ bool PreFlightCheck::preflightCheck(orb_advert_t *mavlink_log_pub, vehicle_statu
 		failed = true;
 	}
 
+	/* ---- CPU resources ---- */
+	if (!cpuResourceCheck(mavlink_log_pub, reportFailures)) {
+		failed = true;
+	}
+
 	/* Report status */
 	return !failed;
 }
